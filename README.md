@@ -2,33 +2,33 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Instructions
-This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
+## Lab1: Introduction to Chainlit
+We will be using [Chainlit](https://docs.chainlit.io/get-started/overview) as the frontend framework to develop our LLM Powered applications. Chainlit is an open-source Python package that makes it incredibly fast to build Chat GPT like applications with your own business logic and data.
 
-## Branches
-The branches are structured to correspond to the videos in the course. The naming convention is `CHAPTER#_MOVIE#`. As an example, the branch named `02_03` corresponds to the second chapter and the third video in that chapter. 
-Some branches will have a beginning and an end state. These are marked with the letters `b` for "beginning" and `e` for "end". The `b` branch contains the code as it is at the beginning of the movie. The `e` branch contains the code as it is at the end of the movie. The `main` branch holds the final state of the code when in the course.
+In this lab, we will put up a very simple Chainlit application that echos a user's query.
 
-When switching from one exercise files branch to the next after making changes to the files, you may get a message like this:
+For example, if user says
 
-    error: Your local changes to the following files would be overwritten by checkout:        [files]
-    Please commit your changes or stash them before you switch branches.
-    Aborting
+```
+hello
+```
 
-To resolve this issue:
-	
-    Add changes to git using this command: git add .
-	Commit changes using this command: git commit -m "some message"
+Our Chainlit app will respond with 
 
-## Installing
-1. To use these exercise files, you must have the following installed:
-	- [list of requirements for course]
-2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
-3. [Course-specific instructions]
+```
+Received: hello
+```
 
+The learning objective is to familiarize with Chainlit's framework and to launch the application.
 
-[0]: # (Replace these placeholder URLs with actual course URLs)
+## Exercises
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+We have created some template code in `app/app.py` in the `app folder`.
 
+1. Please go through [Chainlit's documentation](https://docs.chainlit.io/get-started/pure-python) and answer the questions in `app/app.py`
+
+2. Please lanuch the application by running the following command on the Terminal:
+
+```bash
+chainlit run app/app.py -w
+```
