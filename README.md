@@ -5,9 +5,8 @@ _See the readme file in the main branch for updated instructions and information
 ## Lab3: Enabling Load PDF to Chainlit App
 Building on top of the current simplified version of ChatGPT using Chainlit, we now going to add loading PDF capabilities into the application.
 
- NowNow we have a web interface working, we will now add an LLM to our Chainlit app to have our simplified version of ChatGPT. We will be using [Langchain](https://python.langchain.com/docs/get_started/introduction) as the framework for this course. It provides easy abstractions and a wide varieties of data connectors and interfaces for everything LLM app development.
+In this lab, we will utilize the build in PDF loading and parsing connectors inside Langchain, load the PDF, and chunk the PDFs into individual pieces with their associated metadata.
 
-In this lab, we will be adding an Chat LLM to our Chainlit app using Langchain.
 
 ## Exercises
 
@@ -34,6 +33,6 @@ chainlit run app/app.py -w
 
 ## References
 
-- [Langchain's Prompt Template](https://python.langchain.com/docs/modules/model_io/prompts/prompt_templates/#chatprompttemplate)
-- [Langchain documentation](https://python.langchain.com/docs/modules/chains/foundational/llm_chain#legacy-llmchain)
+- [Langchain PDF Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/pdf)
+- [Langchain Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/#text-splitters)
 - [Chainlit's documentation](https://docs.chainlit.io/get-started/pure-python)
