@@ -32,3 +32,7 @@ We have created some template code in `app/app.py` in the `app folder`.
 ```bash
 chainlit run app/app.py -w
 ```
+
+## Solution
+
+Please see app/app.py.
