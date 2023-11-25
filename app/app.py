@@ -15,8 +15,7 @@ async def on_chat_start():
     # to set streaming=True for streaming tokens
     ##########################################################################
     model = ChatOpenAI(
-        model="gpt-4-1106-preview",
-        streaming=True
+        ...
     )
 
     ##########################################################################
@@ -29,16 +28,7 @@ async def on_chat_start():
     # Refer to the documentation listed in the README.md file for reference.
     ##########################################################################
     prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "system",
-                "You are Chainlit GPT, a helpful assistant.",
-            ),
-            (
-                "human",
-                "{question}"
-            ),
-        ]
+        ...
     )
     ##########################################################################
     # Exercise 1c:
@@ -46,10 +36,14 @@ async def on_chat_start():
     # series of LLM calls.We will use the default StrOutputParser to parse the
     # LLM outputs.
     ##########################################################################
-    chain = LLMChain(llm=model, prompt=prompt, output_parser=StrOutputParser())
+    chain = LLMChain(
+        llm=...,
+        prompt=...,
+        output_parser=StrOutputParser()
+    )
 
-    # We are saving the chain in user_session, so we do not have to rebuild
-    # it every single time.
+    # Let's save the chain from user_session so we do not have to rebuild
+    # every single time we receive a message
     cl.user_session.set("chain", chain)
 
 
@@ -66,7 +60,8 @@ async def main(message: cl.Message):
     # response to the user.
     ##########################################################################
     response = await chain.arun(
-        question=message.content, callbacks=[cl.LangchainCallbackHandler()]
+        ...,
+        callbacks=[cl.LangchainCallbackHandler()]
     )
 
     await cl.Message(content=response).send()
