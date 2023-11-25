@@ -2,8 +2,10 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab2: Adding LLM to Chainlit App
-Now we have a web interface working, we will now add an LLM to our Chainlit app to have our simplified version of ChatGPT. We will be using [Langchain](https://python.langchain.com/docs/get_started/introduction) as the framework for this course. It provides easy abstractions and a wide varieties of data connectors and interfaces for everything LLM app development.
+## Lab3: Enabling Load PDF to Chainlit App
+Building on top of the current simplified version of ChatGPT using Chainlit, we now going to add loading PDF capabilities into the application.
+
+ NowNow we have a web interface working, we will now add an LLM to our Chainlit app to have our simplified version of ChatGPT. We will be using [Langchain](https://python.langchain.com/docs/get_started/introduction) as the framework for this course. It provides easy abstractions and a wide varieties of data connectors and interfaces for everything LLM app development.
 
 In this lab, we will be adding an Chat LLM to our Chainlit app using Langchain.
 
