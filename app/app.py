@@ -34,26 +34,14 @@ def process_file(*, file: AskFileResponse) -> list:
     with NamedTemporaryFile() as tempfile:
         tempfile.write(file.content)
 
-        ######################################################################
-        #
-        # 1. Load the PDF
-        #
-        ######################################################################
         loader = PDFPlumberLoader(tempfile.name)
 
-        ######################################################################
         documents = loader.load()
 
-        ######################################################################
-        #
-        # 2. Split the text
-        #
-        ######################################################################
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=3000,
             chunk_overlap=100
         )
-        ######################################################################
 
         docs = text_splitter.split_documents(documents)
 
@@ -72,16 +60,10 @@ def create_search_engine(*, file: AskFileResponse) -> VectorStore:
     docs = process_file(file=file)
     cl.user_session.set("docs", docs)
     
-    ##########################################################################
-    #
-    # 3. Set the Encoder model for creating embeddings
-    #
-    ##########################################################################
     encoder = OpenAIEmbeddings(
         model="text-embedding-ada-002"
     )
-    ##########################################################################
-
+    
     # Initialize Chromadb client and settings, reset to ensure we get a clean
     # search engine
     client = chromadb.EphemeralClient()
@@ -95,20 +77,12 @@ def create_search_engine(*, file: AskFileResponse) -> VectorStore:
     )
     search_engine._client.reset()
 
-    ##########################################################################
-    #
-    # 4. Create the document search engine. Remember to add 
-    # client_settings using the above settings.
-    #
-    ##########################################################################
-    
     search_engine = Chroma.from_documents(
         client=client,
         documents=docs,
         embedding=encoder,
         client_settings=client_settings 
     )
-    ##########################################################################
 
     return search_engine
 
@@ -140,27 +114,17 @@ async def start():
         streaming=True
     )
 
-    ##########################################################################
-    #
-    # 5. Create the chain / tool for RetrievalQAWithSourcesChain.
-    #
-    ##########################################################################
     chain = RetrievalQAWithSourcesChain.from_chain_type(
         llm=llm,
         chain_type="stuff",
         retriever=search_engine.as_retriever(max_tokens_limit=4097),
-        ######################################################################
-        # 6. Customize prompts to improve summarization and question
-        # answering performance. Perhaps create your own prompt in prompts.py?
-        ######################################################################
+
         chain_type_kwargs={
             "prompt": PROMPT,
             "document_prompt": EXAMPLE_PROMPT
         },
     )
-    ##########################################################################
 
-    # await msg.update(content=f"`{file.name}` processed. You can now ask questions!")
     msg.content = f"`{file.name}` processed. You can now ask questions!"
     await msg.update()
 
