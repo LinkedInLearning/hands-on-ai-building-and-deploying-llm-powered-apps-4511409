@@ -5,7 +5,7 @@ _See the readme file in the main branch for updated instructions and information
 ## Lab2: Adding LLM to Chainlit App
 Now we have a web interface working, we will now add an LLM to our Chainlit app to have our simplified version of ChatGPT. We will be using [Langchain](https://python.langchain.com/docs/get_started/introduction) as the framework for this course. It provides easy abstractions and a wide varieties of data connectors and interfaces for everything LLM app development.
 
-In this lab, we will be adding an Chat LLM to our Chainlit app. 
+In this lab, we will be adding an Chat LLM to our Chainlit app using Langchain.
 
 ## Exercises
 
