@@ -2,30 +2,16 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab1: Introduction to Chainlit
-We will be using [Chainlit](https://docs.chainlit.io/get-started/overview) as the frontend framework to develop our LLM Powered applications. Chainlit is an open-source Python package that makes it incredibly fast to build Chat GPT like applications with your own business logic and data.
+## Lab2: Adding LLM to Chainlit App
+Now we have a web interface working, we will now add an LLM to our Chainlit app to have our simplified version of ChatGPT. We will be using [Langchain](https://python.langchain.com/docs/get_started/introduction) as the framework for this course. It provides easy abstractions and a wide varieties of data connectors and interfaces for everything LLM app development.
 
-In this lab, we will put up a very simple Chainlit application that echos a user's query.
-
-For example, if user says
-
-```
-hello
-```
-
-Our Chainlit app will respond with 
-
-```
-Received: hello
-```
-
-The learning objective is to familiarize with Chainlit's framework and to launch the application.
+In this lab, we will be adding an Chat LLM to our Chainlit app. 
 
 ## Exercises
 
-We have created some template code in `app/app.py` in the `app folder`.
+We will build on top of our existing chainlit app code in `app/app.py` in the `app` folder. As in our previous app, we added some template code and instructions in `app/app.py`
 
-1. Please go through [Chainlit's documentation](https://docs.chainlit.io/get-started/pure-python) and answer the questions in `app/app.py`
+1. Please go through the exercises in `app/app.py`. 
 
 2. Please lanuch the application by running the following command on the Terminal:
 
@@ -35,4 +21,17 @@ chainlit run app/app.py -w
 
 ## Solution
 
-Please see app/app.py.
+Please see `app/app.py`.
+
+Alternatively, to launch the application, please run the following command on the Terminal:
+
+```bash
+chainlit run app/app.py -w
+```
+
+
+## References
+
+- [Langchain's Prompt Template](https://python.langchain.com/docs/modules/model_io/prompts/prompt_templates/#chatprompttemplate)
+- [Langchain documentation](https://python.langchain.com/docs/modules/chains/foundational/llm_chain#legacy-llmchain)
+- [Chainlit's documentation](https://docs.chainlit.io/get-started/pure-python)
