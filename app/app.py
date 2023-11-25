@@ -12,8 +12,5 @@ async def main(message: cl.Message):
 # Exercise 1b:
 # Please get the content of the chainlit Message and send it back as a
 # response
-#
 ##############################################################################
-    response = message.content
-
-    await cl.Message(content=response).send()
+    await cl.Message().send()
