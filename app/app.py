@@ -55,6 +55,39 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         return docs
 
 
+def create_search_engine(*, file: AskFileResponse) -> VectorStore:
+    
+    # Process and save data in the user session
+    docs = process_file(file=file)
+    cl.user_session.set("docs", docs)
+    
+    encoder = OpenAIEmbeddings(
+        model="text-embedding-ada-002"
+    )
+    
+    # Initialize Chromadb client and settings, reset to ensure we get a clean
+    # search engine
+    client = chromadb.EphemeralClient()
+    client_settings=Settings(
+        allow_reset=True,
+        anonymized_telemetry=False
+    )
+    search_engine = Chroma(
+        client=client,
+        client_settings=client_settings
+    )
+    search_engine._client.reset()
+
+    search_engine = Chroma.from_documents(
+        client=client,
+        documents=docs,
+        embedding=encoder,
+        client_settings=client_settings 
+    )
+
+    return search_engine
+    
+
 @cl.on_chat_start
 async def on_chat_start():
     """This function is written to prepare the environments for the chat
@@ -76,6 +109,12 @@ async def on_chat_start():
     # Send message to user to let them know we are processing the file
     msg = cl.Message(content=f"Processing `{file.name}`...")
     await msg.send()
+
+    try:
+        search_engine = await cl.make_async(create_search_engine)(file=file)
+    except Exception as e:
+        await cl.Message(content=f"Error: {e}").send()
+        raise SystemError
 
     model = ChatOpenAI(
         model="gpt-3.5-turbo-16k-0613",
