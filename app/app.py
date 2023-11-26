@@ -1,15 +1,26 @@
+# Chroma compatibility issue resolution
+# https://docs.trychroma.com/troubleshooting#sqlite
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 from tempfile import NamedTemporaryFile
 from typing import List
 
 import chainlit as cl
 from chainlit.types import AskFileResponse
+
+import chromadb
+from chromadb.config import Settings
+from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
+from langchain.document_loaders import PDFPlumberLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import Document, StrOutputParser
-from langchain.chains import LLMChain
-
-from langchain.document_loaders import PDFPlumberLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.vectorstores.base import VectorStore
 
 
 def process_file(*, file: AskFileResponse) -> List[Document]:
