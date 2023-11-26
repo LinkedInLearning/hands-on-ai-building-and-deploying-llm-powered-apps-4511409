@@ -28,8 +28,6 @@ Alternatively, to launch the application, please run the following command on th
 chainlit run app/app.py -w
 ```
 
-
 ## References
 
-- [Langchain Embedding Models](https://python.langchain.com/docs/modules/data_connection/text_embedding/)
-- [ChromaDB Langchain Integration](https://docs.trychroma.com/integrations/langchain)
+- [Langchain RetrivalQA](https://python.langchain.com/docs/use_cases/web_scraping#research-automation)
