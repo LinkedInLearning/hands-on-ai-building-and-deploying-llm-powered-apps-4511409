@@ -92,6 +92,10 @@ async def on_chat_start():
     # Send message to user to let them know we are processing the file
     msg = cl.Message(content=f"Processing `{file.name}`...")
     await msg.send()
+    docs = process_file(file=file)
+    cl.user_session.set("docs", docs)
+    msg.content = f"`{file.name}` processed. Loading ..."
+    await msg.update()
     ######################################################################
 
     model = ChatOpenAI(
