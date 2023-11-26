@@ -144,7 +144,7 @@ async def on_chat_start():
     await msg.update()
 
     ##########################################################################
-    # Exercise 1a:
+    # Exercise 1:
     # Now we have search engine setup, our Chat with PDF application can do
     # RAG architecture pattern. Please use the appropriate RetrievalQA Chain
     # from Langchain. 
@@ -183,24 +183,14 @@ async def main(message: cl.Message):
     )
     answer = response["answer"]
     sources = response["sources"].strip()
-    source_elements = []
 
-    # Get the documents from the user session
+    # Get all of the documents from user session
     docs = cl.user_session.get("docs")
     metadatas = [doc.metadata for doc in docs]
     all_sources = [m["source"] for m in metadatas]
 
-    ##########################################################################
-    # Exercise 1a:
-    # Now we have search engine setup, our Chat with PDF application can do
-    # RAG architecture pattern. Please use the appropriate RetrievalQA Chain
-    # from Langchain. 
-    # 
-    # Remember, we would want to set the model temperature to
-    # 0 to ensure model outputs do not vary across runs, and we would want to
-    # also return sources to our answers.
-    ##########################################################################
     # Adding sources to the answer
+    source_elements = []
     if sources:
         found_sources = []
 
