@@ -15,7 +15,7 @@ async def on_chat_start():
     # to set streaming=True for streaming tokens
     ##########################################################################
     model = ChatOpenAI(
-        model="gpt-3.5-turbo-1106",
+        model="gpt-3.5-turbo-16k-0613",
         streaming=True
     )
 
