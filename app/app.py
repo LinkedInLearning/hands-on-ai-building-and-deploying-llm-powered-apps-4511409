@@ -27,7 +27,7 @@ from langchain.vectorstores.base import VectorStore
 # Exercise 2:
 # Please import the copied prompt scaffolds from prompt.py
 ##############################################################################
-from prompt import EXAMPLE_PROMPT, PROMPT
+from prompt import ...
 
 
 def process_file(*, file: AskFileResponse) -> List[Document]:
@@ -165,7 +165,7 @@ async def on_chat_start():
         llm=model,
         chain_type="stuff",
         retriever=search_engine.as_retriever(max_tokens_limit=4097),
-        chain_type_kwargs={"prompt": PROMPT, "document_prompt": EXAMPLE_PROMPT},
+        ...,
     )
 
     # We are saving the chain in user_session, so we do not have to rebuild
