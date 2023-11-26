@@ -23,6 +23,13 @@ from langchain.vectorstores import Chroma
 from langchain.vectorstores.base import VectorStore
 
 
+##############################################################################
+# Exercise 2:
+# Please import the copied prompt scaffolds from prompt.py
+##############################################################################
+from prompt import EXAMPLE_PROMPT, PROMPT
+
+
 def process_file(*, file: AskFileResponse) -> List[Document]:
     """Processes one PDF file from a Chainlit AskFileResponse object by first
     loading the PDF document and then chunk it into sub documents. Only
@@ -143,28 +150,23 @@ async def on_chat_start():
     msg.content = f"`{file.name}` loaded. You can now ask questions!"
     await msg.update()
 
-    ##########################################################################
-    # Exercise 1:
-    # Now we have search engine setup, our Chat with PDF application can do
-    # RAG architecture pattern. Please use the appropriate RetrievalQA Chain
-    # from Langchain. 
-    # 
-    # Remember, we would want to set the model temperature to
-    # 0 to ensure model outputs do not vary across runs, and we would want to
-    # also return sources to our answers.
-    ##########################################################################
     model = ChatOpenAI(
         model="gpt-3.5-turbo-16k-0613",
         temperature=0,
         streaming=True
     )
 
+    ##########################################################################
+    # Exercise 3:
+    # Please modify this chain's initiation with the proper kwargs to take in
+    # custom prompts.
+    ##########################################################################
     chain = RetrievalQAWithSourcesChain.from_chain_type(
         llm=model,
         chain_type="stuff",
         retriever=search_engine.as_retriever(max_tokens_limit=4097),
+        chain_type_kwargs={"prompt": PROMPT, "document_prompt": EXAMPLE_PROMPT},
     )
-    ##########################################################################
 
     # We are saving the chain in user_session, so we do not have to rebuild
     # it every single time.

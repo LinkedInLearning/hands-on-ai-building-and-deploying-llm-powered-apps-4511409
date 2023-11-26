@@ -2,32 +2,17 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab5: Putting it All Together
-In Lab 2, we created the basic scaffold of our Chat with PDF App. In Lab 3, we added PDF uploading and processing functionality. In Lab 4, we added the capability to indexing documents into a vector database. Now we have all the required pieces together, it's time for us to assemble our RAG (retrieval-augmented generation) system using Langchain.
+## Lab6: Setup Prompting
+Now our Chat with PDF application is up and running, but we run into a very slight problem: one of the key questions is not working despite that there's ample information in the PDF documents!!!
 
+We can "fix" this is via prompt engineering. Prompt Engineering refers to methods for how to communicate with LLM to steer its behavior for desired outcomes without updating the model weights.
+
+Before we can do that, we need to extract the prompt template out of the code.
 
 ## Exercises
 
-We will build on top of our existing chainlit app code in `app/app.py` in the `app` folder. As in our previous app, we added some template code and instructions in `app/app.py`
-
-1. Please go through the exercises in `app/app.py`. 
-
-2. Please lanuch the application by running the following command on the Terminal:
-
-```bash
-chainlit run app/app.py -w
-```
-
-## Solution
-
-Please see `app/app.py`.
-
-Alternatively, to launch the application, please run the following command on the Terminal:
-
-```bash
-chainlit run app/app.py -w
-```
+Please extract Langchain's prompt template out of the code base into an independent prompt.py in the app directory. Control (or Command for Mac) click will help you navigate this very quickly!
 
 ## References
 
-- [Langchain RetrivalQA](https://python.langchain.com/docs/use_cases/web_scraping#research-automation)
+- [Prompt Engineering vs Blind Prompting](https://mitchellh.com/writing/prompt-engineering-vs-blind-prompting)
