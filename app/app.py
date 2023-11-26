@@ -92,18 +92,12 @@ def create_search_engine(*, docs: List[Document], embeddings: Embeddings) -> Vec
         client_settings=client_settings
     )
     search_engine._client.reset()
-    ##########################################################################
-    # Exercise 1b:
-    # Now we have defined our encoder model and initialized our search engine
-    # client, please create the search engine from documents
-    ##########################################################################
     search_engine = Chroma.from_documents(
         client=client,
         documents=docs,
         embedding=embeddings,
         client_settings=client_settings 
     )
-    ##########################################################################
 
     return search_engine
     
@@ -136,15 +130,9 @@ async def on_chat_start():
     await msg.update()
 
     # Indexing documents into our search engine
-    ##########################################################################
-    # Exercise 1a:
-    # Add OpenAI's embedding model as the encoder. The most standard one to
-    # use is text-embedding-ada-002.
-    ##########################################################################
     embeddings = OpenAIEmbeddings(
         model="text-embedding-ada-002"
     )
-    ##########################################################################
     try:
         search_engine = await cl.make_async(create_search_engine)(
             docs=docs,

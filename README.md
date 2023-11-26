@@ -2,10 +2,9 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab4: Indexing Documents into Vector Database
-In the previous lab, we enabled document loading and chunking them into smaller sub documents. Now, we will need to index them into our search engine vector databse in order for us to build our Chat with PDF application using the RAG (Retrieval Augmented Generation) pattern.
+## Lab5: Putting it All Together
+In Lab 2, we created the basic scaffold of our Chat with PDF App. In Lab 3, we added PDF uploading and processing functionality. In Lab 4, we added the capability to indexing documents into a vector database. Now we have all the required pieces together, it's time for us to assemble our RAG (retrieval-augmented generation) system using Langchain.
 
-In this lab, we will implement adding OpenAI's embedding model and index the documents we chunked in the previous section into a Vector Database. We will be using [Chroma](https://www.trychroma.com/) as the vector database of choice. Chroma is a lightweight embedding database that can live in memory, similar to SQLite.
 
 ## Exercises
 
