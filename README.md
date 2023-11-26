@@ -35,4 +35,4 @@ chainlit run app/app.py -w
 
 - [Langchain PDF Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/pdf)
 - [Langchain Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/#text-splitters)
-- [Chainlit's documentation](https://docs.chainlit.io/get-started/pure-python)
+- [Chainlit Ask File Message](https://docs.chainlit.io/api-reference/ask/ask-for-file)

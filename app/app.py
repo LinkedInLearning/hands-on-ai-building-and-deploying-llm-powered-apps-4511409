@@ -72,6 +72,28 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
 
 @cl.on_chat_start
 async def on_chat_start():
+    ######################################################################
+    # Exercise 1c:
+    # At the start of our Chat with PDF app, we will first ask users to
+    # upload the PDF file they want to ask questions against.
+    # 
+    # Please use Chainlit's AskFileMessage and get the file from users.
+    # Note for this course, we only want to deal with one single file.
+    ######################################################################
+    files = None
+    while files is None:
+        files = await cl.AskFileMessage(
+            content="Please Upload the PDF file you want to chat with...",
+            accept=["application/pdf"],
+            max_size_mb=20,
+        ).send()
+    file = files[0]
+
+    # Send message to user to let them know we are processing the file
+    msg = cl.Message(content=f"Processing `{file.name}`...")
+    await msg.send()
+    ######################################################################
+
     model = ChatOpenAI(
         model="gpt-3.5-turbo-1106",
         streaming=True
