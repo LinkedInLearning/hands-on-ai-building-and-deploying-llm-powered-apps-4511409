@@ -42,8 +42,8 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         # the file is 'tempfile.name'. Please use one of the PDF loaders in
         # Langchain to load the file.
         ######################################################################
-        loader = PDFPlumberLoader(tempfile.name)
-        documents = loader.load()
+        loader = ...
+        documents = ...
         ######################################################################
 
         ######################################################################
@@ -52,11 +52,8 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         # a list of helpful text splitters. Please use one of the splitters
         # to chunk the file.
         ######################################################################
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=3000,
-            chunk_overlap=100
-        )
-        docs = text_splitter.split_documents(documents)
+        text_splitter = ...
+        docs = ...
         ######################################################################
 
         # We are adding source_id into the metadata here to denote which
@@ -82,11 +79,7 @@ async def on_chat_start():
     ######################################################################
     files = None
     while files is None:
-        files = await cl.AskFileMessage(
-            content="Please Upload the PDF file you want to chat with...",
-            accept=["application/pdf"],
-            max_size_mb=20,
-        ).send()
+        files = await ...
     file = files[0]
     ######################################################################
 
