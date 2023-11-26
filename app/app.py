@@ -155,15 +155,11 @@ async def on_chat_start():
     ##########################################################################
     model = ChatOpenAI(
         model="gpt-3.5-turbo-16k-0613",
-        temperature=0,
+        temperature=...,
         streaming=True
     )
 
-    chain = RetrievalQAWithSourcesChain.from_chain_type(
-        llm=model,
-        chain_type="stuff",
-        retriever=search_engine.as_retriever(max_tokens_limit=4097),
-    )
+    chain = ...
     ##########################################################################
 
     # We are saving the chain in user_session, so we do not have to rebuild
