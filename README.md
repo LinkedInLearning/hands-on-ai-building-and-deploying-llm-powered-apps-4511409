@@ -19,17 +19,6 @@ We will build on top of our existing chainlit app code in `app/app.py` in the `a
 chainlit run app/app.py -w
 ```
 
-## Solution
-
-Please see `app/app.py`.
-
-Alternatively, to launch the application, please run the following command on the Terminal:
-
-```bash
-chainlit run app/app.py -w
-```
-
-
 ## References
 
 - [Langchain Embedding Models](https://python.langchain.com/docs/modules/data_connection/text_embedding/)
