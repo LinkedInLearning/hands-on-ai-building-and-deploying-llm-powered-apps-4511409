@@ -88,6 +88,7 @@ async def on_chat_start():
             max_size_mb=20,
         ).send()
     file = files[0]
+    ######################################################################
 
     # Send message to user to let them know we are processing the file
     msg = cl.Message(content=f"Processing `{file.name}`...")
@@ -97,7 +98,6 @@ async def on_chat_start():
     cl.user_session.set("docs", docs)
     msg.content = f"`{file.name}` processed. Loading ..."
     await msg.update()
-    ######################################################################
 
     model = ChatOpenAI(
         model="gpt-3.5-turbo-16k-0613",
