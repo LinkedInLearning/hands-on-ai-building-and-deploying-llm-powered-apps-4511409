@@ -2,11 +2,10 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab3: Enabling Load PDF to Chainlit App
-Building on top of the current simplified version of ChatGPT using Chainlit, we now going to add loading PDF capabilities into the application.
+## Lab4: Indexing Documents into Vector Database
+In the previous lab, we enabled document loading and chunking them into smaller sub documents. Now, we will need to index them into our search engine vector databse in order for us to build our Chat with PDF application using the RAG (Retrieval Augmented Generation) pattern.
 
-In this lab, we will utilize the build in PDF loading and parsing connectors inside Langchain, load the PDF, and chunk the PDFs into individual pieces with their associated metadata.
-
+In this lab, we will implement adding OpenAI's embedding model and index the documents we chunked in the previous section into a Vector Database. We will be using [Chroma](https://www.trychroma.com/) as the vector database of choice. Chroma is a lightweight embedding database that can live in memory, similar to SQLite.
 
 ## Exercises
 
@@ -33,6 +32,5 @@ chainlit run app/app.py -w
 
 ## References
 
-- [Langchain PDF Loaders](https://python.langchain.com/docs/modules/data_connection/document_loaders/pdf)
-- [Langchain Text Splitters](https://python.langchain.com/docs/modules/data_connection/document_transformers/#text-splitters)
-- [Chainlit Ask File Message](https://docs.chainlit.io/api-reference/ask/ask-for-file)
+- [Langchain Embedding Models](https://python.langchain.com/docs/modules/data_connection/text_embedding/)
+- [ChromaDB Langchain Integration](https://docs.trychroma.com/integrations/langchain)

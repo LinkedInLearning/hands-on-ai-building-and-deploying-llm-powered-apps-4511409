@@ -18,6 +18,7 @@ from langchain.document_loaders import PDFPlumberLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import Document, StrOutputParser
+from langchain.schema.embeddings import Embeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.vectorstores.base import VectorStore
@@ -55,8 +56,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         )
         docs = text_splitter.split_documents(documents)
 
-        # We are adding source_id into the metadata here to denote which
-        # source document it is.
+        # Adding source_id into the metadata to denote which document it is
         for i, doc in enumerate(docs):
             doc.metadata["source"] = f"source_{i}"
 
@@ -66,35 +66,44 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         return docs
 
 
-def create_search_engine(*, file: AskFileResponse) -> VectorStore:
-    
-    # Process and save data in the user session
-    docs = process_file(file=file)
-    cl.user_session.set("docs", docs)
-    
-    encoder = OpenAIEmbeddings(
-        model="text-embedding-ada-002"
-    )
-    
-    # Initialize Chromadb client and settings, reset to ensure we get a clean
-    # search engine
+def create_search_engine(*, docs: List[Document], embeddings: Embeddings) -> VectorStore:
+    """Takes a list of Langchain Documents and an embedding model API wrapper
+    and build a search index using a VectorStore.
+
+    Args:
+        docs (List[Document]): List of Langchain Documents to be indexed into
+        the search engine.
+        embeddings (Embeddings): encoder model API used to calculate embedding
+
+    Returns:
+        VectorStore: Langchain VectorStore
+    """
+    # Initialize Chromadb client to enable resetting and disable telemtry
     client = chromadb.EphemeralClient()
     client_settings=Settings(
         allow_reset=True,
         anonymized_telemetry=False
     )
+
+    # Reset the search engine to ensure we don't use old copies.
+    # NOTE: we do not need this for production
     search_engine = Chroma(
         client=client,
         client_settings=client_settings
     )
     search_engine._client.reset()
-
+    ##########################################################################
+    # Exercise 1b:
+    # Now we have defined our encoder model and initialized our search engine
+    # client, please create the search engine from documents
+    ##########################################################################
     search_engine = Chroma.from_documents(
         client=client,
         documents=docs,
-        embedding=encoder,
+        embedding=embeddings,
         client_settings=client_settings 
     )
+    ##########################################################################
 
     return search_engine
     
@@ -107,7 +116,7 @@ async def on_chat_start():
     Returns:
         None
     """
-
+    # Asking user to to upload a PDF to chat with
     files = None
     while files is None:
         files = await cl.AskFileMessage(
@@ -117,15 +126,35 @@ async def on_chat_start():
         ).send()
     file = files[0]
 
-    # Send message to user to let them know we are processing the file
+    # Process and save data in the user session
     msg = cl.Message(content=f"Processing `{file.name}`...")
     await msg.send()
+   
+    docs = process_file(file=file)
+    cl.user_session.set("docs", docs)
+    msg.content = f"`{file.name}` processed. Loading ..."
+    await msg.update()
 
+    # Indexing documents into our search engine
+    ##########################################################################
+    # Exercise 1a:
+    # Add OpenAI's embedding model as the encoder. The most standard one to
+    # use is text-embedding-ada-002.
+    ##########################################################################
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-ada-002"
+    )
+    ##########################################################################
     try:
-        search_engine = await cl.make_async(create_search_engine)(file=file)
+        search_engine = await cl.make_async(create_search_engine)(
+            docs=docs,
+            embeddings=embeddings
+        )
     except Exception as e:
         await cl.Message(content=f"Error: {e}").send()
         raise SystemError
+    msg.content = f"`{file.name}` loaded. You can now ask questions!"
+    await msg.update()
 
     model = ChatOpenAI(
         model="gpt-3.5-turbo-16k-0613",
