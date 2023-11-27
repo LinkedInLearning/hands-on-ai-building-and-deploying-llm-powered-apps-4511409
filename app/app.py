@@ -11,7 +11,7 @@ import chainlit as cl
 from chainlit.types import AskFileResponse
 import chromadb
 from chromadb.config import Settings
-from langchain.chains import LLMChain, RetrievalQAWithSourcesChain
+from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import PDFPlumberLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
