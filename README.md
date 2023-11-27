@@ -2,16 +2,14 @@
 This is the repository for the LinkedIn Learning course `Hands-On AI: Building and Deploying LLM-Powered Apps`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 _See the readme file in the main branch for updated instructions and information._
-## Lab6: Setup Prompting
-Now our Chat with PDF application is up and running, but we run into a very slight problem: one of the key questions is not working despite that there's ample information in the PDF documents!!!
+## Lab6: Prompt Engineering
+With the prompt templates extracted from the code, we can iterate on the prompts to fix the problem that we have observed!
 
-We can "fix" this is via prompt engineering. Prompt Engineering refers to methods for how to communicate with LLM to steer its behavior for desired outcomes without updating the model weights.
-
-Before we can do that, we need to extract the prompt template out of the code.
+Please iterate on the prompts and ensure the model can respond properly to our sample question.
 
 ## Exercises
 
-Please extract Langchain's prompt template out of the code base into an independent prompt.py in the app directory. Control (or Command for Mac) click will help you navigate this very quickly!
+Please find a prompt in our Chainlit application's playground that ensures our sample question is answered properly. And then edit `prompt.py` with the newly discovered/engineered prompt.
 
 ## References
 

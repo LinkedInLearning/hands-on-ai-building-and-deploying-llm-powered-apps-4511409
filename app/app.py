@@ -9,7 +9,6 @@ from typing import List
 
 import chainlit as cl
 from chainlit.types import AskFileResponse
-
 import chromadb
 from chromadb.config import Settings
 from langchain.chains import LLMChain, RetrievalQAWithSourcesChain
@@ -22,11 +21,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.vectorstores.base import VectorStore
 
-
-##############################################################################
-# Exercise 2:
-# Please import the copied prompt scaffolds from prompt.py
-##############################################################################
 from prompt import EXAMPLE_PROMPT, PROMPT
 
 
@@ -156,11 +150,6 @@ async def on_chat_start():
         streaming=True
     )
 
-    ##########################################################################
-    # Exercise 3:
-    # Please modify this chain's initiation with the proper kwargs to take in
-    # custom prompts.
-    ##########################################################################
     chain = RetrievalQAWithSourcesChain.from_chain_type(
         llm=model,
         chain_type="stuff",
