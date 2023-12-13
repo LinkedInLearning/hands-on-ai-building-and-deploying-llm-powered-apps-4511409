@@ -78,6 +78,7 @@ async def on_chat_start():
     #
     # Please use Chainlit's AskFileMessage and get the file from users.
     # Note for this course, we only want to deal with one single file.
+    # NOTE: https://docs.chainlit.io/api-reference/ask/ask-for-file
     ######################################################################
     files = None
     while files is None:
