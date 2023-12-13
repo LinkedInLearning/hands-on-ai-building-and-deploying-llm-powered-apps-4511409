@@ -19,7 +19,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
 
     Args:
         file (AskFileResponse): input file to be processed
-    
+
     Raises:
         ValueError: when we fail to process PDF files. We consider PDF file
         processing failure when there's no text returned. For example, PDFs
@@ -41,6 +41,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         # We have the input PDF file saved as a temporary file. The name of
         # the file is 'tempfile.name'. Please use one of the PDF loaders in
         # Langchain to load the file.
+        # NOTE: https://python.langchain.com/docs/modules/data_connection/document_loaders/pdf#using-pdfplumber
         ######################################################################
         loader = ...
         documents = ...
@@ -51,6 +52,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         # We can now chunk the documents now it is loaded. Langchain provides
         # a list of helpful text splitters. Please use one of the splitters
         # to chunk the file.
+        # NOTE: https://python.langchain.com/docs/modules/data_connection/text_splitter#using-recursivecharactertextsplitter
         ######################################################################
         text_splitter = ...
         docs = ...
@@ -73,7 +75,7 @@ async def on_chat_start():
     # Exercise 1c:
     # At the start of our Chat with PDF app, we will first ask users to
     # upload the PDF file they want to ask questions against.
-    # 
+    #
     # Please use Chainlit's AskFileMessage and get the file from users.
     # Note for this course, we only want to deal with one single file.
     ######################################################################
@@ -92,10 +94,7 @@ async def on_chat_start():
     msg.content = f"`{file.name}` processed. Loading ..."
     await msg.update()
 
-    model = ChatOpenAI(
-        model="gpt-3.5-turbo-16k-0613",
-        streaming=True
-    )
+    model = ChatOpenAI(model="gpt-3.5-turbo-16k-0613", streaming=True)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -103,10 +102,7 @@ async def on_chat_start():
                 "system",
                 "You are Chainlit GPT, a helpful assistant.",
             ),
-            (
-                "human",
-                "{question}"
-            ),
+            ("human", "{question}"),
         ]
     )
     chain = LLMChain(llm=model, prompt=prompt, output_parser=StrOutputParser())
@@ -118,7 +114,6 @@ async def on_chat_start():
 
 @cl.on_message
 async def main(message: cl.Message):
-
     # Let's load the chain from user_session
     chain = cl.user_session.get("chain")  # type: LLMChain
 
@@ -127,4 +122,3 @@ async def main(message: cl.Message):
     )
 
     await cl.Message(content=response).send()
-
