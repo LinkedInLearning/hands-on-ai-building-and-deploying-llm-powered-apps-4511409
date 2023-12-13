@@ -1,8 +1,9 @@
 # Chroma compatibility issue resolution
 # https://docs.trychroma.com/troubleshooting#sqlite
-__import__('pysqlite3')
+__import__("pysqlite3")
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 
 from tempfile import NamedTemporaryFile
 from typing import List
@@ -31,7 +32,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
 
     Args:
         file (AskFileResponse): input file to be processed
-    
+
     Raises:
         ValueError: when we fail to process PDF files. We consider PDF file
         processing failure when there's no text returned. For example, PDFs
@@ -51,8 +52,7 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         documents = loader.load()
 
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=3000,
-            chunk_overlap=100
+            chunk_size=3000, chunk_overlap=100
         )
         docs = text_splitter.split_documents(documents)
 
@@ -66,7 +66,9 @@ def process_file(*, file: AskFileResponse) -> List[Document]:
         return docs
 
 
-def create_search_engine(*, docs: List[Document], embeddings: Embeddings) -> VectorStore:
+def create_search_engine(
+    *, docs: List[Document], embeddings: Embeddings
+) -> VectorStore:
     """Takes a list of Langchain Documents and an embedding model API wrapper
     and build a search index using a VectorStore.
 
@@ -80,28 +82,28 @@ def create_search_engine(*, docs: List[Document], embeddings: Embeddings) -> Vec
     """
     # Initialize Chromadb client to enable resetting and disable telemtry
     client = chromadb.EphemeralClient()
-    client_settings=Settings(
-        allow_reset=True,
-        anonymized_telemetry=False
-    )
+    client_settings = Settings(allow_reset=True, anonymized_telemetry=False)
 
     # Reset the search engine to ensure we don't use old copies.
     # NOTE: we do not need this for production
-    search_engine = Chroma(
-        client=client,
-        client_settings=client_settings
-    )
+    search_engine = Chroma(client=client, client_settings=client_settings)
     search_engine._client.reset()
     ##########################################################################
-    # Exercise 1b:
+    # Exercise 1:
     # Now we have defined our encoder model and initialized our search engine
     # client, please create the search engine from documents
+    # NOTE: https://python.langchain.com/docs/integrations/vectorstores/chroma
     ##########################################################################
-    search_engine = ...
+    search_engine = Chroma.from_documents(
+        client=client,
+        documents=docs,
+        embeddings=embeddings,
+        client_settings=client_settings,
+    )
     ##########################################################################
 
     return search_engine
-    
+
 
 @cl.on_chat_start
 async def on_chat_start():
@@ -124,7 +126,7 @@ async def on_chat_start():
     # Process and save data in the user session
     msg = cl.Message(content=f"Processing `{file.name}`...")
     await msg.send()
-   
+
     docs = process_file(file=file)
     cl.user_session.set("docs", docs)
     msg.content = f"`{file.name}` processed. Loading ..."
@@ -132,17 +134,17 @@ async def on_chat_start():
 
     # Indexing documents into our search engine
     ##########################################################################
-    # Exercise 1a:
+    # Exercise 2:
     # Add OpenAI's embedding model as the encoder. The most standard one to
     # use is text-embedding-ada-002.
+    # NOTE: https://python.langchain.com/docs/integrations/text_embedding/openai
     ##########################################################################
-    embeddings = ...
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
     ##########################################################################
 
     try:
         search_engine = await cl.make_async(create_search_engine)(
-            docs=docs,
-            embeddings=embeddings
+            docs=docs, embeddings=embeddings
         )
     except Exception as e:
         await cl.Message(content=f"Error: {e}").send()
@@ -150,10 +152,7 @@ async def on_chat_start():
     msg.content = f"`{file.name}` loaded. You can now ask questions!"
     await msg.update()
 
-    model = ChatOpenAI(
-        model="gpt-3.5-turbo-16k-0613",
-        streaming=True
-    )
+    model = ChatOpenAI(model="gpt-3.5-turbo-16k-0613", streaming=True)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -161,10 +160,7 @@ async def on_chat_start():
                 "system",
                 "You are Chainlit GPT, a helpful assistant.",
             ),
-            (
-                "human",
-                "{question}"
-            ),
+            ("human", "{question}"),
         ]
     )
     chain = LLMChain(llm=model, prompt=prompt, output_parser=StrOutputParser())
@@ -176,7 +172,6 @@ async def on_chat_start():
 
 @cl.on_message
 async def main(message: cl.Message):
-
     # Let's load the chain from user_session
     chain = cl.user_session.get("chain")  # type: LLMChain
 
@@ -185,4 +180,3 @@ async def main(message: cl.Message):
     )
 
     await cl.Message(content=response).send()
-
