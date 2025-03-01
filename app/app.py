@@ -32,7 +32,7 @@ def process_file(*, file: AskFileResponse) -> list:
     
 
     with NamedTemporaryFile() as tempfile:
-        tempfile.write(file.content)
+        tempfile.write(file.file.read())
 
         loader = PDFPlumberLoader(tempfile.name)
 
