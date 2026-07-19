@@ -6,6 +6,7 @@ import chainlit as cl
 # Please add the proper decorator to this main function so Chainlit will call
 # this function when it receives a message
 ##############################################################################
+@cl.on_message
 async def main(message: cl.Message):
 
 ##############################################################################
@@ -13,4 +14,4 @@ async def main(message: cl.Message):
 # Please get the content of the chainlit Message and send it back as a
 # response
 ##############################################################################
-    await cl.Message().send()
+    await cl.Message(message.content).send()
